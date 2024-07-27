@@ -2,6 +2,7 @@ package com.github.devapro.logcat.timber.ui
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.github.devapro.logcat.timber.R
 import com.github.devapro.logcat.timber.model.LogItemModel
@@ -11,9 +12,11 @@ class LogAdapter: RecyclerView.Adapter<LogItemViewHolder>() {
     private val items = mutableListOf<LogItemModel>()
 
     fun setItems(newItems: List<LogItemModel>) {
+        val diffCallback = LogDiffCallback(items, newItems)
+        val diffResult = DiffUtil.calculateDiff(diffCallback)
         items.clear()
         items.addAll(newItems)
-        notifyDataSetChanged()
+        diffResult.dispatchUpdatesTo(this)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogItemViewHolder {

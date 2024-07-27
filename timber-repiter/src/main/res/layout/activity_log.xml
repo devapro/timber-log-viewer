@@ -9,10 +9,10 @@
     tools:context=".LogActivity">
 
     <Button
-        android:id="@+id/buttonMinimize"
+        android:id="@+id/minimize_btn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="MINIMIZE"
         android:textColor="@android:color/white"
         android:textSize="25sp"
@@ -20,46 +20,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/titleText"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:gravity="center"
-        android:text="GEEKS FOR GEEKS"
-        android:textColor="@color/primary_bg"
-        android:textSize="30sp"
-        android:textStyle="bold"
+    <Spinner
+        android:id="@+id/log_type_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonMinimize" />
+        app:layout_constraintTop_toBottomOf="@+id/minimize_btn"
+        />
 
     <EditText
-        android:id="@+id/descEditText"
-        android:layout_width="match_parent"
-        android:layout_height="330dp"
-        android:layout_marginTop="10dp"
-        android:gravity="start"
-        android:hint="Description"
-        android:paddingLeft="20dp"
-        android:paddingTop="10dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="10dp"
-        android:textColor="@android:color/black"
-        android:textSize="22sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titleText" />
-
-    <Button
-        android:id="@+id/saveBtn"
-        android:layout_width="wrap_content"
+        android:id="@+id/tag_search"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="SAVE"
-        android:textColor="@android:color/white"
-        android:textSize="25sp"
+        android:hint="Tag Search"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/log_type_spinner" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/log_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="0dp"
+        android:background="@android:color/white"
+        android:padding="4dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tag_search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
