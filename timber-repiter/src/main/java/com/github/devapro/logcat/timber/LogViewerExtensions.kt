@@ -15,7 +15,17 @@ import androidx.core.content.ContextCompat
 
 private const val INTENT_COMMAND = "command"
 
-fun Context.startFloatingService(command: String = "") {
+fun Activity.startLogsService() {
+    checkAndRequestNotificationPermission {
+        if (drawOverOtherAppsEnabled()) {
+            startFloatingService()
+        } else {
+            requestOverlayDisplayPermission()
+        }
+    }
+}
+
+internal fun Context.startFloatingService(command: String = "") {
 
     val intent = Intent(this, LogNotificationsService::class.java)
     if (command.isNotBlank()) {
@@ -30,14 +40,14 @@ fun Context.startFloatingService(command: String = "") {
 
 }
 
-fun Context.drawOverOtherAppsEnabled(): Boolean {
+internal fun Context.drawOverOtherAppsEnabled(): Boolean {
     return Settings.canDrawOverlays(this)
 }
 
 /**
  * Check for notification permission before starting the service so that the notification is visible
  */
-fun Activity.checkAndRequestNotificationPermission(
+internal fun Activity.checkAndRequestNotificationPermission(
     onPermissionsGranted: () -> Unit
 ) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -55,7 +65,7 @@ fun Activity.checkAndRequestNotificationPermission(
 /**
  * Check if the service is running
  */
-fun Context.isMyServiceRunning(): Boolean {
+internal fun Context.isMyServiceRunning(): Boolean {
     // The ACTIVITY_SERVICE is needed to retrieve a
     // ActivityManager for interacting with the global system
     // It has a constant String value "activity".
@@ -78,7 +88,7 @@ fun Context.isMyServiceRunning(): Boolean {
 }
 
 
-fun Activity.requestOverlayDisplayPermission() {
+internal fun Activity.requestOverlayDisplayPermission() {
     // An AlertDialog is created
     val builder = AlertDialog.Builder(this)
 

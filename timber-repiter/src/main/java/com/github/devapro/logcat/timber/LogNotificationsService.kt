@@ -13,7 +13,7 @@ import com.github.devapro.logcat.timber.ui.LogFloatingWindow
 private const val INTENT_COMMAND = "command"
 private const val INTENT_COMMAND_EXIT = "exit"
 
-class LogNotificationsService: Service() {
+internal class LogNotificationsService: Service() {
 
     private val binder = LocalBinder()
 

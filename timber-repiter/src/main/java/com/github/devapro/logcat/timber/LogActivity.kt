@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
 import com.github.devapro.logcat.timber.data.LogRepository
-import com.github.devapro.logcat.timber.data.TestData
 import com.github.devapro.logcat.timber.model.LogType
 import com.github.devapro.logcat.timber.ui.LogAdapter
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +20,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-class LogActivity : Activity() {
+internal class LogActivity : Activity() {
 
     private var logCollectJob: Job? = null
     private  val logAdapter = LogAdapter()

@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
-object LogRepository {
+internal object LogRepository {
     
     private val _logs = MutableSharedFlow<LogItemModel>()
     val logs

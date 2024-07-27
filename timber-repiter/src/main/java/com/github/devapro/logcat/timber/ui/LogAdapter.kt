@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.devapro.logcat.timber.R
 import com.github.devapro.logcat.timber.model.LogItemModel
 
-class LogAdapter: RecyclerView.Adapter<LogItemViewHolder>() {
+internal class LogAdapter: RecyclerView.Adapter<LogItemViewHolder>() {
 
     private val items = mutableListOf<LogItemModel>()
 

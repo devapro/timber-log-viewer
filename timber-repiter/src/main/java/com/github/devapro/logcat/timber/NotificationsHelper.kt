@@ -19,7 +19,7 @@ private const val INTENT_COMMAND_NOTE = "note"
 private const val CODE_EXIT_INTENT = 2
 private const val CODE_NOTE_INTENT = 3
 
-object NotificationsHelper {
+internal object NotificationsHelper {
 
     fun createNotificationChannel(context: Context) {
         val notificationManager =

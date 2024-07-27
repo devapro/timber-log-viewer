@@ -7,7 +7,7 @@ import com.github.devapro.logcat.timber.R
 import com.github.devapro.logcat.timber.model.LogItemModel
 import com.github.devapro.logcat.timber.model.LogType
 
-class LogItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+internal class LogItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
 
     private val logType: TextView = itemView.findViewById(R.id.log_type)
     private val logTag: TextView = itemView.findViewById(R.id.log_tag)

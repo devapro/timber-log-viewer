@@ -23,7 +23,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 
-class LogFloatingWindow(
+internal class LogFloatingWindow(
     private val context: Context
 ) {
 

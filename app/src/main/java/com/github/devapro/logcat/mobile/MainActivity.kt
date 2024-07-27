@@ -1,15 +1,9 @@
 package com.github.devapro.logcat.mobile
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
-import com.github.devapro.logcat.timber.checkAndRequestNotificationPermission
-import com.github.devapro.logcat.timber.drawOverOtherAppsEnabled
-import com.github.devapro.logcat.timber.requestOverlayDisplayPermission
-import com.github.devapro.logcat.timber.startFloatingService
+import com.github.devapro.logcat.timber.startLogsService
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -22,13 +16,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        checkAndRequestNotificationPermission {
-            if (drawOverOtherAppsEnabled()) {
-                startFloatingService()
-            } else {
-                requestOverlayDisplayPermission()
-            }
-        }
+        startLogsService()
     }
 
     override fun onResume() {
