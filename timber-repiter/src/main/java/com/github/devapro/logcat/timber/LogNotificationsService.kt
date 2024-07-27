@@ -12,7 +12,6 @@ import com.github.devapro.logcat.timber.ui.LogFloatingWindow
 
 private const val INTENT_COMMAND = "command"
 private const val INTENT_COMMAND_EXIT = "exit"
-private const val INTENT_COMMAND_NOTE = "note"
 
 class LogNotificationsService: Service() {
 

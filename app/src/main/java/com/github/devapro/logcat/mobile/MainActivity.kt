@@ -34,10 +34,18 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         logsJob = lifecycleScope.launch {
-//            while (true) {
-//                Timber.e("Logcat message")
-//                delay(1000)
-//            }
+            while (true) {
+                Timber.e("Logcat message")
+                delay(1000)
+                Timber.i("Logcat message")
+                delay(1000)
+                Timber.i(
+                    "Logcat message with a very long text that should be truncated to fit the screen"
+                )
+                delay(1000)
+                Timber.w("Logcat message")
+                Timber.tag("CustomTag").d("Logcat message")
+            }
         }
     }
 

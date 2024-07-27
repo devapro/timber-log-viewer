@@ -11,21 +11,28 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
+import com.github.devapro.logcat.timber.data.LogRepository
 import com.github.devapro.logcat.timber.data.TestData
 import com.github.devapro.logcat.timber.model.LogType
 import com.github.devapro.logcat.timber.ui.LogAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
 
 class LogActivity : Activity() {
+
+    private var logCollectJob: Job? = null
+    private  val logAdapter = LogAdapter()
+    private lateinit var logList: RecyclerView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_log)
 
-        val logAdapter = LogAdapter()
-        val logList = findViewById<RecyclerView>(R.id.log_list)
+        logList = findViewById(R.id.log_list)
         logList.adapter = logAdapter
-        logAdapter.setItems(TestData.logs)
 
         val spinner = findViewById<Spinner>(R.id.log_type_spinner)
         val items = LogType.entries.map { it.name }
@@ -60,10 +67,21 @@ class LogActivity : Activity() {
     override fun onStart() {
         super.onStart()
         doBindService()
+        logAdapter.setItems(LogRepository.logsList)
+        logList.scrollToPosition(logAdapter.itemCount - 1)
+        logCollectJob = GlobalScope.launch {
+            LogRepository.logs.collect{
+                launch(Dispatchers.Main) {
+                    logAdapter.setItems(LogRepository.logsList)
+                    logList.scrollToPosition(logAdapter.itemCount - 1)
+                }
+            }
+        }
     }
 
     override fun onStop() {
         super.onStop()
+        logCollectJob?.cancel()
         doUnbindService()
     }
 

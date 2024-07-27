@@ -2,6 +2,8 @@ package com.github.devapro.logcat.timber.ui
 
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK
+import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.PixelFormat
 import android.os.Build
 import android.util.DisplayMetrics
@@ -14,7 +16,12 @@ import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.devapro.logcat.timber.LogActivity
 import com.github.devapro.logcat.timber.R
-import com.github.devapro.logcat.timber.data.TestData
+import com.github.devapro.logcat.timber.data.LogRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+
 
 class LogFloatingWindow(
     private val context: Context
@@ -34,6 +41,8 @@ class LogFloatingWindow(
     private lateinit var floatWindowLayoutParam: WindowManager.LayoutParams
 
     private val logAdapter = LogAdapter()
+
+    private var logCollectJob: Job? = null
 
     fun createWindow() {
 
@@ -126,12 +135,20 @@ class LogFloatingWindow(
     }
 
     fun removeWindow() {
+        logCollectJob?.cancel()
         windowManager.removeView(floatView)
     }
 
     private fun initList() {
         logList.adapter = logAdapter
-        logAdapter.setItems(TestData.logs)
+        logCollectJob = GlobalScope.launch {
+            LogRepository.logs.collect{
+                launch(Dispatchers.Main) {
+                    logAdapter.setItems(LogRepository.logsList)
+                    logList.scrollToPosition(logAdapter.itemCount - 1)
+                }
+            }
+        }
     }
 
     private fun initMaximizeButton() {
@@ -151,6 +168,7 @@ class LogFloatingWindow(
                 context,
                 LogActivity::class.java
             )
+            backToHome.addFlags(FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_MULTIPLE_TASK)
 
 
             // 1) FLAG_ACTIVITY_NEW_TASK flag helps activity to start a new task on the history stack.
