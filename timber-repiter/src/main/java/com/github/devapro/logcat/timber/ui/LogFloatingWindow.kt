@@ -11,7 +11,6 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.github.devapro.logcat.timber.LogActivity
 import com.github.devapro.logcat.timber.R
@@ -24,7 +23,10 @@ class LogFloatingWindow(
     private lateinit var floatView: ViewGroup
 
     private lateinit var dragAndDropBtn: View
+    private lateinit var changeSizeBtn: View
     private lateinit var maximizeBtn: View
+    private lateinit var closeBtn: View
+
     private lateinit var logList: RecyclerView
 
     private lateinit var windowManager: WindowManager
@@ -59,9 +61,12 @@ class LogFloatingWindow(
 
         // The Buttons and the EditText are connected with
         // the corresponding component id used in floating_layout xml file
-        maximizeBtn = floatView.findViewById(R.id.maximizeBtn)
-        dragAndDropBtn = floatView.findViewById(R.id.buttonDragAndDrop)
-        logList = floatView.findViewById(R.id.logList)
+        maximizeBtn = floatView.findViewById(R.id.maximize_btn)
+        dragAndDropBtn = floatView.findViewById(R.id.drag_and_drop_btn)
+        changeSizeBtn = floatView.findViewById(R.id.change_size_btn)
+        closeBtn = floatView.findViewById(R.id.close_btn)
+
+        logList = floatView.findViewById(R.id.log_list)
 
 
 
@@ -115,6 +120,8 @@ class LogFloatingWindow(
 
         initMaximizeButton()
         initMoveButton()
+        initCloseButton()
+        initSizeButton()
         initList()
     }
 
@@ -156,6 +163,14 @@ class LogFloatingWindow(
         }
     }
 
+    private fun initCloseButton() {
+        // The button that helps to maximize the app
+        closeBtn.setOnClickListener { // stopSelf() method is used to stop the service if
+            // The window is removed from the screen
+            windowManager.removeView(floatView)
+        }
+    }
+
     private fun initMoveButton() {
         // Another feature of the floating window is, the window is movable.
         // The window can be moved at any position on the screen.
@@ -187,6 +202,39 @@ class LogFloatingWindow(
                         floatWindowLayoutUpdateParam.x = ((x + event.rawX) - px).toInt()
                         floatWindowLayoutUpdateParam.y = ((y + event.rawY) - py).toInt()
 
+                        // updated parameter is applied to the WindowManager
+                        windowManager.updateViewLayout(floatView, floatWindowLayoutUpdateParam)
+                    }
+                }
+                return false
+            }
+        })
+    }
+
+    private fun initSizeButton() {
+        // Another feature of the floating window is, the window is movable.
+        // The window can be moved at any position on the screen.
+        changeSizeBtn.setOnTouchListener(object : View.OnTouchListener {
+            val floatWindowLayoutUpdateParam: WindowManager.LayoutParams = floatWindowLayoutParam
+            var with: Double = 0.0
+            var height: Double = 0.0
+            var y: Double = 0.0
+            var py: Double = 0.0
+
+            override fun onTouch(v: View, event: MotionEvent): Boolean {
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        height = floatWindowLayoutUpdateParam.height.toDouble()
+
+                        y = floatWindowLayoutUpdateParam.y.toDouble()
+
+                        // returns the original raw Y
+                        // coordinate of this event
+                        py = event.rawY.toDouble()
+                    }
+
+                    MotionEvent.ACTION_MOVE -> {
+                        floatWindowLayoutUpdateParam.height = (py - event.rawY + height).toInt()
                         // updated parameter is applied to the WindowManager
                         windowManager.updateViewLayout(floatView, floatWindowLayoutUpdateParam)
                     }
