@@ -19,7 +19,7 @@ class LogNotificationsService: Service() {
     private val binder = LocalBinder()
 
     inner class LocalBinder : Binder() {
-        fun getService(): LogNotificationsService = this@LogNotificationsService
+        fun getService() = this@LogNotificationsService
     }
 
     override fun onBind(intent: Intent?): IBinder {
@@ -45,19 +45,13 @@ class LogNotificationsService: Service() {
         }
 
         startAsForegroundService()
-
-        // Show the floating window for adding a new note.
-        if (command == INTENT_COMMAND_NOTE) {
-            Toast.makeText(
-                this,
-                "Floating window to be added in the next step.",
-                Toast.LENGTH_SHORT
-            ).show()
-        } else {
-            floatingWindow?.createWindow()
-        }
+        showWindow()
 
         return super.onStartCommand(intent, flags, startId)
+    }
+
+    fun showWindow() {
+        floatingWindow?.createWindow()
     }
 
     override fun onDestroy() {

@@ -1,7 +1,11 @@
 package com.github.devapro.logcat.timber
 
 import android.app.Activity
+import android.content.ComponentName
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
@@ -10,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.github.devapro.logcat.timber.data.TestData
 import com.github.devapro.logcat.timber.model.LogType
 import com.github.devapro.logcat.timber.ui.LogAdapter
+
 
 class LogActivity : Activity() {
 
@@ -46,8 +51,65 @@ class LogActivity : Activity() {
 
         val minimizeBtn = findViewById<View>(R.id.minimize_btn)
         minimizeBtn.setOnClickListener {
-
+            mBoundService?.showWindow()
             finish()
+        }
+    }
+
+
+    override fun onStart() {
+        super.onStart()
+        doBindService()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        doUnbindService()
+    }
+
+
+    private var mBoundService: LogNotificationsService? = null
+    private var mIsBound = false
+
+    private val mConnection: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // This is called when the connection with the service has
+            // been established, giving us the service object we can use
+            // to interact with the service.  Because we have bound to a
+            // explicit service that we know is running in our own
+            // process, we can cast its IBinder to a concrete class and
+            // directly access it.
+            mBoundService = (service as LogNotificationsService.LocalBinder).getService()
+        }
+
+        override fun onServiceDisconnected(className: ComponentName) {
+            // This is called when the connection with the service has
+            // been unexpectedly disconnected -- that is, its process
+            // crashed. Because it is running in our same process, we
+            // should never see this happen.
+            mBoundService = null
+        }
+    }
+
+    private fun doBindService() {
+        // Establish a connection with the service.  We use an explicit
+        // class name because we want a specific service implementation
+        // that we know will be running in our own process (and thus
+        // won't be supporting component replacement by other
+        // applications).
+        bindService(
+            Intent(this, LogNotificationsService::class.java),
+            mConnection,
+            BIND_AUTO_CREATE
+        )
+        mIsBound = true
+    }
+
+    private fun doUnbindService() {
+        if (mIsBound) {
+            // Detach our existing connection.
+            unbindService(mConnection)
+            mIsBound = false
         }
     }
 
