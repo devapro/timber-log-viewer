@@ -14,11 +14,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.recyclerview.widget.RecyclerView
+import com.github.devapro.logcat.timber.CoroutineContextProvider
 import com.github.devapro.logcat.timber.LogActivity
 import com.github.devapro.logcat.timber.R
 import com.github.devapro.logcat.timber.data.LogRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -43,6 +43,10 @@ internal class LogFloatingWindow(
     private val logAdapter = LogAdapter()
 
     private var logCollectJob: Job? = null
+
+    private val scope = CoroutineContextProvider().createScope(
+        Dispatchers.IO
+    )
 
     fun createWindow() {
 
@@ -141,7 +145,7 @@ internal class LogFloatingWindow(
 
     private fun initList() {
         logList.adapter = logAdapter
-        logCollectJob = GlobalScope.launch {
+        logCollectJob = scope.launch {
             LogRepository.updates.collect{
                 launch(Dispatchers.Main) {
                     logAdapter.setItems(LogRepository.logsList)

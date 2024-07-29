@@ -1,7 +1,8 @@
 package com.github.devapro.logcat.timber.data
 
+import com.github.devapro.logcat.timber.CoroutineContextProvider
 import com.github.devapro.logcat.timber.model.LogItemModel
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
@@ -12,6 +13,9 @@ internal object LogRepository {
     val updates
         get() = _updates.asSharedFlow()
 
+    private val scope = CoroutineContextProvider().createScope(
+        Dispatchers.IO
+    )
 
     private val _logsList = mutableListOf<LogItemModel>()
     val logsList: List<LogItemModel>
@@ -28,14 +32,14 @@ internal object LogRepository {
         }
 
     fun addLog(log: LogItemModel) {
-        GlobalScope.launch {
+        scope.launch {
             _logsList.add(log)
             _updates.emit(System.currentTimeMillis())
         }
     }
 
     fun refreshLogs() {
-        GlobalScope.launch {
+        scope.launch {
             _updates.emit(System.currentTimeMillis())
         }
     }
