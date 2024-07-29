@@ -36,6 +36,8 @@
         android:hint="Tag Search"
         android:textColor="@android:color/black"
         android:textSize="16sp"
+        android:maxLines="1"
+        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/log_type_spinner" />

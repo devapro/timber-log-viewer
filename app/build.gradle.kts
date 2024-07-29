@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(project(":timber-repiter"))
+    implementation(project(":timber-viewer"))
     implementation(libs.timber)
 
     testImplementation(libs.junit)

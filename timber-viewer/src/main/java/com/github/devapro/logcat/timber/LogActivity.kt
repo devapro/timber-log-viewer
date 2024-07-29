@@ -7,11 +7,15 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.EditText
 import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
 import com.github.devapro.logcat.timber.data.LogRepository
+import com.github.devapro.logcat.timber.data.SettingsRepository
 import com.github.devapro.logcat.timber.model.LogType
 import com.github.devapro.logcat.timber.ui.LogAdapter
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +45,14 @@ internal class LogActivity : Activity() {
             listOf("ALL") + items
         )
         spinner.setAdapter(adapter)
+
+        var selectedIndex = LogType.entries.indexOf(SettingsRepository.getLogType())
+        if (selectedIndex < 0) {
+            selectedIndex = 0
+        } else {
+            selectedIndex++
+        }
+        spinner.setSelection(selectedIndex)
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 arg0: AdapterView<*>?,
@@ -48,8 +60,9 @@ internal class LogActivity : Activity() {
                 arg2: Int,
                 arg3: Long
             ) {
-                // Do what you want
-                val items = spinner.selectedItem.toString()
+                SettingsRepository.setLogType(
+                    LogType.entries.firstOrNull { it.name == spinner.selectedItem.toString() }
+                )
             }
 
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
@@ -60,6 +73,24 @@ internal class LogActivity : Activity() {
             mBoundService?.showWindow()
             finish()
         }
+
+        val tagSearch = findViewById<EditText>(R.id.tag_search)
+        tagSearch.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
+        tagSearch.setText(SettingsRepository.getTagFilter())
+        tagSearch.setOnEditorActionListener { v, actionId, _ ->
+            if (actionId ==  EditorInfo.IME_ACTION_SEARCH
+                || actionId == EditorInfo.IME_ACTION_DONE) {
+                SettingsRepository.setTagFilter(v.text.toString())
+                v.clearFocus()
+                hideKeyBoard(v.windowToken)
+            }
+            true
+        }
+    }
+
+    private fun hideKeyBoard(windowToken: IBinder) {
+        val imm = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
 

@@ -50,14 +50,12 @@ internal fun Context.drawOverOtherAppsEnabled(): Boolean {
 internal fun Activity.checkAndRequestNotificationPermission(
     onPermissionsGranted: () -> Unit
 ) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        when (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)) {
-            android.content.pm.PackageManager.PERMISSION_GRANTED -> {
-                onPermissionsGranted()
-            }
-            else -> {
-                requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 0)
-            }
+    when (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS)) {
+        android.content.pm.PackageManager.PERMISSION_GRANTED -> {
+            onPermissionsGranted()
+        }
+        else -> {
+            requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 0)
         }
     }
 }
