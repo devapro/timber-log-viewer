@@ -7,18 +7,36 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
 
 internal object LogRepository {
-    
-    private val _logs = MutableSharedFlow<LogItemModel>()
-    val logs
-        get() = _logs.asSharedFlow()
+
+    private val _updates = MutableSharedFlow<Long>()
+    val updates
+        get() = _updates.asSharedFlow()
 
 
-    val logsList = mutableListOf<LogItemModel>()
+    private val _logsList = mutableListOf<LogItemModel>()
+    val logsList: List<LogItemModel>
+        get() {
+            val selectedLogType = SettingsRepository.getLogType()
+            val searchQuery = SettingsRepository.getTagFilter()
+            return _logsList
+                .filter {
+                    selectedLogType == null || it.type == selectedLogType
+                }
+                .filter {
+                    searchQuery.isEmpty() || it.tag.contains(searchQuery)
+                }
+        }
 
     fun addLog(log: LogItemModel) {
         GlobalScope.launch {
-            logsList.add(log)
-            _logs.emit(log)
+            _logsList.add(log)
+            _updates.emit(System.currentTimeMillis())
+        }
+    }
+
+    fun refreshLogs() {
+        GlobalScope.launch {
+            _updates.emit(System.currentTimeMillis())
         }
     }
 }

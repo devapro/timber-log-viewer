@@ -63,6 +63,7 @@ internal class LogActivity : Activity() {
                 SettingsRepository.setLogType(
                     LogType.entries.firstOrNull { it.name == spinner.selectedItem.toString() }
                 )
+                LogRepository.refreshLogs()
             }
 
             override fun onNothingSelected(arg0: AdapterView<*>?) {}
@@ -83,6 +84,7 @@ internal class LogActivity : Activity() {
                 SettingsRepository.setTagFilter(v.text.toString())
                 v.clearFocus()
                 hideKeyBoard(v.windowToken)
+                LogRepository.refreshLogs()
             }
             true
         }
@@ -100,7 +102,7 @@ internal class LogActivity : Activity() {
         logAdapter.setItems(LogRepository.logsList)
         logList.scrollToPosition(logAdapter.itemCount - 1)
         logCollectJob = GlobalScope.launch {
-            LogRepository.logs.collect{
+            LogRepository.updates.collect{
                 launch(Dispatchers.Main) {
                     logAdapter.setItems(LogRepository.logsList)
                     logList.scrollToPosition(logAdapter.itemCount - 1)

@@ -142,7 +142,7 @@ internal class LogFloatingWindow(
     private fun initList() {
         logList.adapter = logAdapter
         logCollectJob = GlobalScope.launch {
-            LogRepository.logs.collect{
+            LogRepository.updates.collect{
                 launch(Dispatchers.Main) {
                     logAdapter.setItems(LogRepository.logsList)
                     logList.scrollToPosition(logAdapter.itemCount - 1)
