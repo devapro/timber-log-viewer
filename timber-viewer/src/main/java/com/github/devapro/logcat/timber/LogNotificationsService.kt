@@ -32,8 +32,8 @@ internal class LogNotificationsService: Service() {
         floatingWindow = LogFloatingWindow(this)
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        val command = intent.getStringExtra(INTENT_COMMAND) ?: ""
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        val command = intent?.getStringExtra(INTENT_COMMAND) ?: ""
 
         // Exit the service if we receive the EXIT command.
         // START_NOT_STICKY is important here, we don't want

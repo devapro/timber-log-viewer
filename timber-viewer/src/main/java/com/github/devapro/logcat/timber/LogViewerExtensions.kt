@@ -9,18 +9,24 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat
+import com.github.devapro.logcat.timber.data.SettingsRepository
 
 
 private const val INTENT_COMMAND = "command"
 
-fun Activity.startLogsService() {
-    checkAndRequestNotificationPermission {
-        if (drawOverOtherAppsEnabled()) {
-            startFloatingService()
-        } else {
-            requestOverlayDisplayPermission()
+fun startLogViewer(
+    activity: Activity,
+    searchQuery: String = ""
+) {
+    with(activity) {
+        SettingsRepository.setTagFilter(searchQuery)
+        checkAndRequestNotificationPermission {
+            if (drawOverOtherAppsEnabled()) {
+                startFloatingService()
+            } else {
+                requestOverlayDisplayPermission()
+            }
         }
     }
 }

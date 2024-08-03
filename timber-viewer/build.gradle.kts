@@ -4,9 +4,12 @@ plugins {
     id("maven-publish")
 }
 
+val versionNumber = "0.1.1"
+
 android {
     namespace = "com.github.devapro.logcat.timber"
     compileSdk = 34
+    version = versionNumber
 
     defaultConfig {
         minSdk = 24
@@ -40,4 +43,18 @@ dependencies {
     implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)
+}
+
+publishing {
+    publications {
+        register<MavenPublication>("release") {
+            groupId = "com.github.devapro.logcat.timber"
+            artifactId = "android-client"
+            version = versionNumber
+
+            afterEvaluate {
+                from(components["release"])
+            }
+        }
+    }
 }

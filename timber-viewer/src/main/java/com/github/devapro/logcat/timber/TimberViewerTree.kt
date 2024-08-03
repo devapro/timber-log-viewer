@@ -6,7 +6,7 @@ import com.github.devapro.logcat.timber.model.LogItemModel
 import com.github.devapro.logcat.timber.model.LogType
 import timber.log.Timber
 
-class TimberInterceptor: Timber.DebugTree() {
+class TimberViewerTree: Timber.DebugTree() {
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         // Send the log to the remote server
