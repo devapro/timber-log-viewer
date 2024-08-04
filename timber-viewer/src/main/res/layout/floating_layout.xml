@@ -12,7 +12,7 @@
         android:importantForAccessibility="no"
         android:scaleType="centerInside"
         android:src="@drawable/move"
-        android:tint="@color/secondary_bg"
+        android:tint="@color/icon_green"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,7 +24,7 @@
         android:importantForAccessibility="no"
         android:scaleType="centerInside"
         android:src="@drawable/up"
-        android:tint="@color/primary_bg"
+        android:tint="@color/icon_green"
         app:layout_constraintStart_toEndOf="@+id/drag_and_drop_btn"
         app:layout_constraintEnd_toStartOf="@+id/maximize_btn"
         app:layout_constraintTop_toTopOf="parent" />
@@ -37,8 +37,21 @@
         android:importantForAccessibility="no"
         android:scaleType="centerInside"
         android:src="@drawable/maximize"
-        android:tint="@color/secondary_bg"
+        android:tint="@color/icon_green"
         app:layout_constraintStart_toEndOf="@+id/change_size_btn"
+        app:layout_constraintEnd_toStartOf="@+id/clear_btn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/clear_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerInside"
+        android:src="@drawable/trash"
+        android:tint="@color/icon_green"
+        app:layout_constraintStart_toEndOf="@+id/maximize_btn"
         app:layout_constraintEnd_toStartOf="@+id/close_btn"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +63,7 @@
         android:importantForAccessibility="no"
         android:scaleType="centerInside"
         android:src="@drawable/xmark"
-        android:tint="@color/secondary_bg"
+        android:tint="@color/icon_green"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

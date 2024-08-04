@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -20,24 +19,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <CheckBox
+        android:id="@+id/tag_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tag"
+        app:layout_constraintEnd_toStartOf="@+id/type_checkbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/minimize_btn" />
+
+    <CheckBox
+        android:id="@+id/type_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type"
+        app:layout_constraintEnd_toStartOf="@+id/log_type_spinner"
+        app:layout_constraintStart_toEndOf="@+id/tag_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/minimize_btn" />
+
     <Spinner
         android:id="@+id/log_type_spinner"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/minimize_btn"
-        />
+        app:layout_constraintStart_toEndOf="@+id/type_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/minimize_btn" />
 
     <EditText
         android:id="@+id/tag_search"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:hint="Tag Search"
+        android:inputType="text"
+        android:maxLines="1"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        android:maxLines="1"
-        android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/log_type_spinner" />

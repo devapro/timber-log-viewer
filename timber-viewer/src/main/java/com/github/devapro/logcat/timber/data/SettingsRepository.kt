@@ -8,6 +8,10 @@ internal object SettingsRepository {
 
     private var tagFilter: String = ""
 
+    private var tagColumnVisibility: Boolean = true
+
+    private var typeColumnVisibility: Boolean = true
+
     fun setTagFilter(tag: String) {
         tagFilter = tag
     }
@@ -24,7 +28,19 @@ internal object SettingsRepository {
         return logType
     }
 
-    fun setSearchQuery(query: String) {
+    fun setTagColumnVisibility(isVisible: Boolean) {
+        tagColumnVisibility = isVisible
+    }
 
+    fun getTagColumnVisibility(): Boolean {
+        return tagColumnVisibility
+    }
+
+    fun setTypeColumnVisibility(isVisible: Boolean) {
+        typeColumnVisibility = isVisible
+    }
+
+    fun getTypeColumnVisibility(): Boolean {
+        return typeColumnVisibility
     }
 }

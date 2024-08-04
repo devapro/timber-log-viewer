@@ -8,7 +8,7 @@
         android:id="@+id/log_type"
         android:layout_width="24dp"
         android:layout_height="wrap_content"
-        android:background="@color/primary_bg"
+        android:background="@color/icon_green"
         android:textFontWeight="700"
         android:textAlignment="center"
         android:ellipsize="marquee"

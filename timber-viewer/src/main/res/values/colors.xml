@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primary_bg">#FF2F8D46</color>
-    <color name="secondary_bg">#777777</color>
+    <color name="icon_green">#09C40F</color>
+    <color name="icon_gray">#4D6F4E</color>
 
     <color name="bg_log_verbose">#6EFFB4</color>
     <color name="bg_log_debug">#FAEE88</color>

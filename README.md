@@ -30,3 +30,5 @@ startLogViewer(activity)
 TODO
 - column settings
 - library publish
+- clear logs
+- store settings in SP

@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +42,7 @@ internal class LogActivity : Activity() {
         val items = LogType.entries.map { it.name }
         val adapter = ArrayAdapter(
             this,
-            android.R.layout.simple_spinner_dropdown_item,
+            R.layout.item_spinner_drop_down,
             listOf("ALL") + items
         )
         spinner.setAdapter(adapter)
@@ -87,6 +88,20 @@ internal class LogActivity : Activity() {
                 LogRepository.refreshLogs()
             }
             true
+        }
+
+        val tagColumnVisibilityCheckbox = findViewById<CheckBox>(R.id.tag_checkbox)
+        tagColumnVisibilityCheckbox.isChecked = SettingsRepository.getTagColumnVisibility()
+        tagColumnVisibilityCheckbox.setOnCheckedChangeListener { _, isChecked ->
+            SettingsRepository.setTagColumnVisibility(isChecked)
+            LogRepository.refreshLogs()
+        }
+
+        val typeColumnVisibilityCheckBox = findViewById<CheckBox>(R.id.type_checkbox)
+        typeColumnVisibilityCheckBox.isChecked = SettingsRepository.getTypeColumnVisibility()
+        typeColumnVisibilityCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            SettingsRepository.setTypeColumnVisibility(isChecked)
+            LogRepository.refreshLogs()
         }
     }
 

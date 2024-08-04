@@ -2,8 +2,10 @@ package com.github.devapro.logcat.timber.ui
 
 import android.view.View
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.github.devapro.logcat.timber.R
+import com.github.devapro.logcat.timber.model.ColumnsConfig
 import com.github.devapro.logcat.timber.model.LogItemModel
 import com.github.devapro.logcat.timber.model.LogType
 
@@ -13,7 +15,10 @@ internal class LogItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val logTag: TextView = itemView.findViewById(R.id.log_tag)
     private val logMessage: TextView = itemView.findViewById(R.id.log_message)
 
-    fun bind(logItemModel: LogItemModel) {
+    fun bind(
+        logItemModel: LogItemModel,
+        columnsConfig: ColumnsConfig
+    ) {
         logType.text = logItemModel.type.symbol
         when (logItemModel.type) {
             LogType.VERBOSE -> logType.setBackgroundResource(R.color.bg_log_verbose)
@@ -24,5 +29,8 @@ internal class LogItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
         logTag.text = logItemModel.tag
         logMessage.text = logItemModel.message
+
+        logTag.isVisible = columnsConfig.isTagVisible
+        logType.isVisible = columnsConfig.isTypeVisible
     }
 }

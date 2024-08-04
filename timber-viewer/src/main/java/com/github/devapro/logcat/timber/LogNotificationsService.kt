@@ -50,6 +50,7 @@ internal class LogNotificationsService: Service() {
     }
 
     fun showWindow() {
+        floatingWindow?.removeWindow()
         floatingWindow?.createWindow()
     }
 

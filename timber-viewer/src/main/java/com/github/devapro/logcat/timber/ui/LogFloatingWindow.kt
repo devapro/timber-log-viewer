@@ -2,8 +2,6 @@ package com.github.devapro.logcat.timber.ui
 
 import android.content.Context
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_MULTIPLE_TASK
-import android.content.Intent.FLAG_ACTIVITY_NEW_TASK
 import android.graphics.PixelFormat
 import android.os.Build
 import android.util.DisplayMetrics
@@ -27,16 +25,17 @@ internal class LogFloatingWindow(
     private val context: Context
 ) {
 
-    private lateinit var floatView: ViewGroup
+    private var floatView: ViewGroup? = null
 
     private lateinit var dragAndDropBtn: View
     private lateinit var changeSizeBtn: View
     private lateinit var maximizeBtn: View
     private lateinit var closeBtn: View
+    private lateinit var clearBtn: View
 
     private lateinit var logList: RecyclerView
 
-    private lateinit var windowManager: WindowManager
+    private val windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
     private lateinit var floatWindowLayoutParam: WindowManager.LayoutParams
 
@@ -58,11 +57,6 @@ internal class LogFloatingWindow(
         val height = metrics.heightPixels
 
 
-        // To obtain a WindowManager of a different Display,
-        // we need a Context for that display, so WINDOW_SERVICE is used
-        windowManager = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-
-
         // A LayoutInflater instance is created to retrieve the
         // LayoutInflater for the floating_layout xml
 
@@ -74,12 +68,14 @@ internal class LogFloatingWindow(
 
         // The Buttons and the EditText are connected with
         // the corresponding component id used in floating_layout xml file
-        maximizeBtn = floatView.findViewById(R.id.maximize_btn)
-        dragAndDropBtn = floatView.findViewById(R.id.drag_and_drop_btn)
-        changeSizeBtn = floatView.findViewById(R.id.change_size_btn)
-        closeBtn = floatView.findViewById(R.id.close_btn)
-
-        logList = floatView.findViewById(R.id.log_list)
+        floatView?.let {
+            maximizeBtn = it.findViewById(R.id.maximize_btn)
+            dragAndDropBtn = it.findViewById(R.id.drag_and_drop_btn)
+            changeSizeBtn = it.findViewById(R.id.change_size_btn)
+            closeBtn = it.findViewById(R.id.close_btn)
+            logList = it.findViewById(R.id.log_list)
+            clearBtn = it.findViewById(R.id.clear_btn)
+        }
 
 
 
@@ -135,12 +131,16 @@ internal class LogFloatingWindow(
         initMoveButton()
         initCloseButton()
         initSizeButton()
+        initClearButton()
         initList()
     }
 
     fun removeWindow() {
         logCollectJob?.cancel()
-        windowManager.removeView(floatView)
+        floatView?.takeIf { it.isAttachedToWindow }?.let {
+            windowManager.removeView(it)
+        }
+        floatView = null
     }
 
     private fun initList() {
@@ -155,16 +155,18 @@ internal class LogFloatingWindow(
         }
     }
 
+    private fun initClearButton() {
+        clearBtn.setOnClickListener {
+            LogRepository.clearLogs()
+        }
+    }
+
     private fun initMaximizeButton() {
         // The button that helps to maximize the app
-        maximizeBtn.setOnClickListener { // stopSelf() method is used to stop the service if
-            // it was previously started
-            //   stopSelf()
-
+        maximizeBtn.setOnClickListener {
 
             // The window is removed from the screen
             windowManager.removeView(floatView)
-
 
             // The app will maximize again. So the MainActivity
             // class will be called again.
@@ -172,8 +174,6 @@ internal class LogFloatingWindow(
                 context,
                 LogActivity::class.java
             )
-            backToHome.addFlags(FLAG_ACTIVITY_NEW_TASK or FLAG_ACTIVITY_MULTIPLE_TASK)
-
 
             // 1) FLAG_ACTIVITY_NEW_TASK flag helps activity to start a new task on the history stack.
             // If a task is already running like the floating window service, a new activity will not be started.
