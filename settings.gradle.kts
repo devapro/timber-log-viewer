@@ -22,3 +22,4 @@ dependencyResolutionManagement {
 rootProject.name = "LogCatViewer"
 include(":app")
 include(":timber-viewer")
+include(":timber-viewer-no-op")

@@ -38,18 +38,14 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.timber)
-    implementation(libs.androidx.activity.ktx)
-    implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.recyclerview)
 }
 
 publishing {
     publications {
         register<MavenPublication>("release") {
             groupId = "com.github.devapro"
-            artifactId = "timber-viewer"
+            artifactId = "timber-viewer-no-op"
             version = versionNumber
 
             afterEvaluate {

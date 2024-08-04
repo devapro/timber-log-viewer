@@ -4,12 +4,24 @@
 - Logs filtering
 - Floating window
 
+<table>
+  <tr>
+    <td>
+        <img src="https://github.com/devapro/timber-log-viewer/blob/main/screenshots/floating_window.png" width="250" style="max-width:100%;">
+    </td>
+    <td>
+        <img src="https://github.com/devapro/timber-log-viewer/blob/main/screenshots/activity.png" width="250" style="max-width:100%;">
+    </td>
+  </tr>
+</table>
+
 ### Usage
 
 1. add dependency to your project
 
 ```kotlin
-implementation("com.github.devapro.logcat.timber:android-client:0.1.0")
+debugImplementation("com.github.devapro:timber-viewer:0.1.1")
+releaseImplementation("com.github.devapro:timber-viewer-no-op:0.1.1")
 ```
 2. Add Timber log tree
 

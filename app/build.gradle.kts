@@ -24,6 +24,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {
@@ -42,8 +43,10 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
-    implementation(project(":timber-viewer"))
     implementation(libs.timber)
+
+    debugImplementation(project(":timber-viewer"))
+    releaseImplementation(project(":timber-viewer-no-op"))
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
