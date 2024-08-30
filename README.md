@@ -20,8 +20,8 @@
 1. add dependency to your project
 
 ```kotlin
-debugImplementation("com.github.devapro:timber-viewer:0.1.1")
-releaseImplementation("com.github.devapro:timber-viewer-no-op:0.1.1")
+debugImplementation("io.github.devapro:timber-viewer:0.1.1")
+releaseImplementation("io.github.devapro:timber-viewer-no-op:0.1.1")
 ```
 2. Add Timber log tree
 
