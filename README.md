@@ -40,5 +40,6 @@ startLogViewer(activity)
 ```
 
 TODO
-- library publish
+
 - store settings in SP
+- add ability open window with predefined parameters
