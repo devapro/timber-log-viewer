@@ -103,6 +103,19 @@ internal class LogActivity : Activity() {
             SettingsRepository.setTypeColumnVisibility(isChecked)
             LogRepository.refreshLogs()
         }
+
+        val timeColumnVisibilityCheckBox = findViewById<CheckBox>(R.id.time_checkbox)
+        timeColumnVisibilityCheckBox.isChecked = SettingsRepository.getTimeColumnVisibility()
+        timeColumnVisibilityCheckBox.setOnCheckedChangeListener { _, isChecked ->
+            SettingsRepository.setTimeColumnVisibility(isChecked)
+            LogRepository.refreshLogs()
+        }
+
+        val clearButton: View = findViewById(R.id.clear_btn)
+        clearButton.setOnClickListener {
+            SettingsRepository.setTagFilter("")
+            LogRepository.refreshLogs()
+        }
     }
 
     private fun hideKeyBoard(windowToken: IBinder) {

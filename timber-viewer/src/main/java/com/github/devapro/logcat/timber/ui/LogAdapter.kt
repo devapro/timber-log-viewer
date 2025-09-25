@@ -12,7 +12,11 @@ import com.github.devapro.logcat.timber.model.LogItemModel
 internal class LogAdapter: RecyclerView.Adapter<LogItemViewHolder>() {
 
     private val items = mutableListOf<LogItemModel>()
-    private var columnsConfig = ColumnsConfig(true, true)
+    private var columnsConfig = ColumnsConfig(
+        isTagVisible = true,
+        isTypeVisible = true,
+        isTimeVisible = true
+    )
 
     fun setItems(newItems: List<LogItemModel>) {
         val diffCallback = LogDiffCallback(items, newItems)
@@ -21,7 +25,8 @@ internal class LogAdapter: RecyclerView.Adapter<LogItemViewHolder>() {
         items.addAll(newItems)
         val columnsConfigNew = ColumnsConfig(
             isTagVisible = SettingsRepository.getTagColumnVisibility(),
-            isTypeVisible = SettingsRepository.getTypeColumnVisibility()
+            isTypeVisible = SettingsRepository.getTypeColumnVisibility(),
+            isTimeVisible = SettingsRepository.getTimeColumnVisibility()
         )
         if (columnsConfigNew != columnsConfig) {
             columnsConfig = columnsConfigNew

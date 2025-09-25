@@ -1,5 +1,6 @@
 package com.github.devapro.logcat.timber.ui
 
+import android.text.format.DateFormat
 import android.view.View
 import android.widget.TextView
 import androidx.core.view.isVisible
@@ -15,6 +16,8 @@ internal class LogItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val logTag: TextView = itemView.findViewById(R.id.log_tag)
     private val logMessage: TextView = itemView.findViewById(R.id.log_message)
 
+    private val logTime: TextView = itemView.findViewById(R.id.log_time)
+
     fun bind(
         logItemModel: LogItemModel,
         columnsConfig: ColumnsConfig
@@ -29,8 +32,10 @@ internal class LogItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
         logTag.text = logItemModel.tag
         logMessage.text = logItemModel.message
+        logTime.text = DateFormat.format("HH:mm:ss", logItemModel.time)
 
         logTag.isVisible = columnsConfig.isTagVisible
         logType.isVisible = columnsConfig.isTypeVisible
+        logTime.isVisible = columnsConfig.isTimeVisible
     }
 }

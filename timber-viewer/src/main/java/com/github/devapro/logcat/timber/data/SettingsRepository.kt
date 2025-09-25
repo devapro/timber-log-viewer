@@ -12,6 +12,8 @@ internal object SettingsRepository {
 
     private var typeColumnVisibility: Boolean = true
 
+    private var timeColumnVisibility: Boolean = true
+
     fun setTagFilter(tag: String) {
         tagFilter = tag
     }
@@ -42,5 +44,13 @@ internal object SettingsRepository {
 
     fun getTypeColumnVisibility(): Boolean {
         return typeColumnVisibility
+    }
+
+    fun setTimeColumnVisibility(isVisible: Boolean) {
+        timeColumnVisibility = isVisible
+    }
+
+    fun getTimeColumnVisibility(): Boolean {
+        return timeColumnVisibility
     }
 }

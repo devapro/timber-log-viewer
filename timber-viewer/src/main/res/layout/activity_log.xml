@@ -20,21 +20,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <CheckBox
-        android:id="@+id/tag_checkbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tag"
-        app:layout_constraintEnd_toStartOf="@+id/type_checkbox"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/minimize_btn" />
-
-    <CheckBox
         android:id="@+id/type_checkbox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Type"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toStartOf="@+id/time_checkbox"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/minimize_btn" />
+
+    <CheckBox
+        android:id="@+id/time_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Time"
+        android:textColor="@android:color/black"
+        app:layout_constraintEnd_toStartOf="@+id/tag_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/type_checkbox"
+        app:layout_constraintTop_toBottomOf="@+id/minimize_btn" />
+
+    <CheckBox
+        android:id="@+id/tag_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tag"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toStartOf="@+id/log_type_spinner"
-        app:layout_constraintStart_toEndOf="@+id/tag_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/time_checkbox"
         app:layout_constraintTop_toBottomOf="@+id/minimize_btn" />
 
     <Spinner
@@ -42,8 +54,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/type_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/time_checkbox"
         app:layout_constraintTop_toBottomOf="@+id/minimize_btn" />
 
     <EditText
@@ -55,9 +68,22 @@
         android:maxLines="1"
         android:textColor="@android:color/black"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/clear_btn"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/log_type_spinner" />
+    <ImageButton
+        android:id="@+id/clear_btn"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@android:color/transparent"
+        android:importantForAccessibility="no"
+        android:scaleType="centerInside"
+        android:src="@drawable/xmark"
+        android:tint="@color/icon_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/tag_search"
+        app:layout_constraintTop_toTopOf="@+id/tag_search"
+        app:layout_constraintTop_toBottomOf="@+id/tag_search"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/log_list"
