@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jreleaser.model.Active
 
 plugins {
@@ -12,12 +13,12 @@ val versionNumber = "0.1.2"
 
 android {
     namespace = "com.github.devapro.logcat.timber"
-    compileSdk = 35
+    compileSdk = 36
     version = versionNumber
 
     defaultConfig {
         aarMetadata {
-            minCompileSdk = 34
+            minCompileSdk = 35
         }
 
         minSdk = 24
@@ -39,10 +40,12 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_1_8)
+        }
     }
-    buildToolsVersion = "34.0.0"
+    buildToolsVersion = "35.0.0"
     publishing {
         singleVariant("release") {
             withSourcesJar()
