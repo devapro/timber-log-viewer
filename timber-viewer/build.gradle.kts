@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
     id("maven-publish")
-    id("org.jreleaser") version "1.13.1"
+    id("org.jreleaser") version "1.20.0"
     id("signing")
 }
 
@@ -12,7 +12,7 @@ val versionNumber = "0.1.2"
 
 android {
     namespace = "com.github.devapro.logcat.timber"
-    compileSdk = 34
+    compileSdk = 35
     version = versionNumber
 
     defaultConfig {
@@ -76,6 +76,7 @@ publishing {
             groupId = "io.github.devapro"
             artifactId = "timber-viewer"
             version = versionNumber
+            description = "Library for viewing Timber logs in a separate window on the device."
 
             pom {
                 name.set("Timber Log Viewer")
