@@ -4,12 +4,12 @@ import org.jreleaser.model.Active
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.jreleaser)
     id("maven-publish")
-    id("org.jreleaser") version "1.20.0"
     id("signing")
 }
 
-val versionNumber = "0.1.2"
+val versionNumber = "0.1.3"
 
 android {
     namespace = "com.github.devapro.logcat.timber"
