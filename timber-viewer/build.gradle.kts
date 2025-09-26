@@ -9,7 +9,7 @@ plugins {
     id("signing")
 }
 
-val versionNumber = "0.1.3"
+val versionNumber = "0.1.4"
 
 android {
     namespace = "com.github.devapro.logcat.timber"
@@ -61,9 +61,7 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
     implementation(libs.timber)
-    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.recyclerview)
 }

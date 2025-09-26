@@ -57,7 +57,7 @@
         android:layout_marginStart="16dp"
         android:textColor="@android:color/black"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/time_checkbox"
+        app:layout_constraintStart_toEndOf="@+id/tag_checkbox"
         app:layout_constraintTop_toBottomOf="@+id/minimize_btn" />
 
     <EditText
