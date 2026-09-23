@@ -2,9 +2,8 @@ import org.jreleaser.model.Active
 
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.jetbrains.kotlin.android)
     id("maven-publish")
-    id("org.jreleaser") version "1.13.1"
+    alias(libs.plugins.jreleaser)
     id("signing")
 }
 
@@ -12,12 +11,12 @@ val versionNumber = "0.1.1"
 
 android {
     namespace = "com.github.devapro.logcat.timber"
-    compileSdk = 34
+    compileSdk = 37
     version = versionNumber
 
     defaultConfig {
         aarMetadata {
-            minCompileSdk = 34
+            minCompileSdk = 37
         }
 
         minSdk = 24
@@ -36,13 +35,9 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
-    buildToolsVersion = "34.0.0"
     publishing {
         singleVariant("release") {
             withSourcesJar()

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timber Log Viewer — see your Android logs on device</title>
+<meta name="description" content="Timber Log Viewer is an Android library that shows Timber logs in a floating window or full-screen list, right on your device or emulator.">
+<style>
+  :root {
+    --bg: #0d1117;
+    --bg-soft: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #58a6ff;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --red: #f85149;
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 0 24px; }
+
+  header.hero {
+    padding: 96px 0 64px;
+    text-align: center;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% -10%, rgba(88, 166, 255, 0.15), transparent),
+      var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+  .hero .logo { font-size: 56px; line-height: 1; margin-bottom: 20px; }
+  h1 { font-size: 44px; letter-spacing: -1px; margin-bottom: 16px; }
+  h1 .accent { color: var(--accent); }
+  .tagline { font-size: 20px; color: var(--muted); max-width: 640px; margin: 0 auto 32px; }
+  .cta { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 12px 28px; border-radius: 8px;
+    font-weight: 600; font-size: 16px; text-decoration: none; transition: opacity .15s;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-primary { background: var(--accent); color: #0d1117; }
+  .btn-ghost { border: 1px solid var(--border); color: var(--text); }
+
+  section { padding: 64px 0; }
+  section + section { border-top: 1px solid var(--border); }
+  h2 { font-size: 28px; margin-bottom: 8px; letter-spacing: -.5px; }
+  .section-sub { color: var(--muted); margin-bottom: 36px; font-size: 16px; }
+
+  .screens { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+  .screens figure { text-align: center; }
+  .screens img {
+    width: 300px; max-width: 90vw; border-radius: 16px;
+    border: 1px solid var(--border); box-shadow: 0 16px 48px rgba(0, 0, 0, .5);
+  }
+  .screens figcaption { margin-top: 14px; color: var(--muted); font-size: 14px; }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .card {
+    background: var(--bg-soft); border: 1px solid var(--border);
+    border-radius: 12px; padding: 24px;
+  }
+  .card .icon { font-size: 28px; margin-bottom: 12px; }
+  .card h3 { font-size: 17px; margin-bottom: 8px; }
+  .card p { color: var(--muted); font-size: 15px; }
+
+  .steps { counter-reset: step; display: flex; flex-direction: column; gap: 28px; }
+  .step { display: flex; gap: 20px; align-items: flex-start; }
+  .step::before {
+    counter-increment: step; content: counter(step);
+    flex: 0 0 36px; height: 36px; border-radius: 50%;
+    background: var(--bg-soft); border: 1px solid var(--accent); color: var(--accent);
+    display: flex; align-items: center; justify-content: center; font-weight: 700;
+  }
+  .step-body { flex: 1; min-width: 0; }
+  .step-body h3 { font-size: 17px; margin-bottom: 6px; }
+  .step-body p { color: var(--muted); font-size: 15px; margin-bottom: 12px; }
+
+  pre {
+    background: var(--bg-soft); border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px 18px; overflow-x: auto; font-family: var(--mono); font-size: 14px;
+    line-height: 1.55;
+  }
+  code.inline { font-family: var(--mono); font-size: 13.5px; background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: 6px; padding: 2px 6px; }
+  .k { color: var(--accent); } .s { color: #a5d6ff; } .c { color: var(--muted); } .f { color: #d2a8ff; }
+
+  table.log-types { border-collapse: collapse; width: 100%; max-width: 460px; margin-top: 4px; }
+  .log-types td { padding: 8px 14px; border: 1px solid var(--border); font-family: var(--mono); font-size: 14px; }
+  .log-types td:first-child { color: var(--muted); width: 40%; }
+  .v { color: var(--muted); } .d { color: var(--accent); } .i { color: var(--green); }
+  .w { color: var(--yellow); } .e { color: var(--red); }
+
+  footer {
+    border-top: 1px solid var(--border); padding: 32px 0 48px;
+    text-align: center; color: var(--muted); font-size: 14px;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="logo">🪵📱</div>
+    <h1>Timber <span class="accent">Log Viewer</span></h1>
+    <p class="tagline">See your Timber logs live on the device — in a draggable floating window or a full-screen list. No laptop, no ADB, no USB cable.</p>
+    <nav class="cta">
+      <a class="btn btn-primary" href="https://github.com/devapro/timber-log-viewer">View on GitHub</a>
+      <a class="btn btn-ghost" href="https://central.sonatype.com/artifact/io.github.devapro/timber-viewer">Maven Central</a>
+    </nav>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <h2>What it looks like</h2>
+    <p class="section-sub">A compact overlay during development, a maximized list when you need the details.</p>
+    <div class="screens">
+      <figure>
+        <img src="screenshots/floating_window.png" alt="Timber Log Viewer floating window showing colored log lines over the app">
+        <figcaption>Floating window overlay — move, resize, clear, maximize</figcaption>
+      </figure>
+      <figure>
+        <img src="screenshots/activity.png" alt="Timber Log Viewer full screen activity with filters and search">
+        <figcaption>Full-screen view — tag search, log-level filter, columns</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Features</h2>
+    <p class="section-sub">Everything runs inside your debug build via a custom Timber tree.</p>
+    <div class="grid">
+      <div class="card"><div class="icon">🫧</div><h3>Floating window</h3><p>Logs stream into a draggable, resizable overlay that stays on top of your app. Minimize and maximize between the overlay and the full-screen list.</p></div>
+      <div class="card"><div class="icon">🎨</div><h3>Color-coded levels</h3><p>Verbose, debug, info, warn and error logs are tinted logcat-style, so problems stand out immediately.</p></div>
+      <div class="card"><div class="icon">🔎</div><h3>Filtering &amp; search</h3><p>Filter by log level and search by tag. Show or hide the tag and level columns to fit the window.</p></div>
+      <div class="card"><div class="icon">🧹</div><h3>Clear on demand</h3><p>One tap wipes the buffer so you can focus on the reproduction you're chasing right now.</p></div>
+      <div class="card"><div class="icon">📦</div><h3>Zero release impact</h3><p>A matching <code class="inline">-no-op</code> artifact drops the whole viewer out of release builds — same API, no behavior.</p></div>
+      <div class="card"><div class="icon">🔔</div><h3>Works in the background</h3><p>The overlay lives in a foreground service, so logs keep coming while you interact with any other screen.</p></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Getting started</h2>
+    <p class="section-sub">Three steps and about two minutes.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-body">
+          <h3>Add the dependencies</h3>
+          <p>The real viewer for debug builds, the no-op twin for everything else.</p>
+<pre><span class="k">dependencies</span> {
+    debugImplementation(<span class="s">"io.github.devapro:timber-viewer:0.1.4"</span>)
+    releaseImplementation(<span class="s">"io.github.devapro:timber-viewer-no-op:0.1.4"</span>)
+}</pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-body">
+          <h3>Plant the tree in your Application</h3>
+          <p>The viewer tree feeds logs into the on-device list instead of logcat.</p>
+<pre><span class="k">class</span> <span class="f">MyApplication</span> : Application() {
+    <span class="k">override fun</span> <span class="f">onCreate</span>() {
+        <span class="k">super</span>.onCreate()
+        Timber.plant(TimberViewerTree())
+        <span class="c">// plant Timber.DebugTree() as well if you still want logcat output</span>
+    }
+}</pre>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-body">
+          <h3>Start the viewer from your first Activity</h3>
+          <p>Grants the notification and overlay permissions it needs, then shows the window.</p>
+<pre>startLogViewer(<span class="k">this</span>)</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2>Requirements</h2>
+    <p class="section-sub">minSdk 24 · works with Timber 5.x · Android 6+ overlay permission may need to be granted manually on some devices.</p>
+    <table class="log-types">
+      <tr><td class="v">Timber.v("verbose")</td><td>shown in gray</td></tr>
+      <tr><td class="d">Timber.d("debug")</td><td>shown in blue</td></tr>
+      <tr><td class="i">Timber.i("info")</td><td>shown in green</td></tr>
+      <tr><td class="w">Timber.w("warn")</td><td>shown in yellow</td></tr>
+      <tr><td class="e">Timber.e("error")</td><td>shown in red</td></tr>
+    </table>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    Timber Log Viewer ·
+    <a href="https://github.com/devapro/timber-log-viewer">github.com/devapro/timber-log-viewer</a> ·
+    <a href="https://github.com/devapro/timber-log-viewer/issues">Issues</a>
+  </div>
+</footer>
+
+</body>
+</html>

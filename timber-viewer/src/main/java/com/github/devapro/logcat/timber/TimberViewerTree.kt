@@ -6,10 +6,9 @@ import com.github.devapro.logcat.timber.model.LogItemModel
 import com.github.devapro.logcat.timber.model.LogType
 import timber.log.Timber
 
-class TimberViewerTree: Timber.DebugTree() {
+class TimberViewerTree : Timber.Tree() {
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        // Send the log to the remote server
         LogRepository.addLog(
             LogItemModel(
                 type = mapPriority(priority),
@@ -18,7 +17,6 @@ class TimberViewerTree: Timber.DebugTree() {
                 time = System.currentTimeMillis()
             )
         )
-        super.log(priority, tag, message, t)
     }
 
     private fun mapPriority(priority: Int): LogType {
