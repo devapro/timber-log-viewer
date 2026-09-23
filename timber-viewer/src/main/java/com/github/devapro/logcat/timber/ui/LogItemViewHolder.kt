@@ -1,8 +1,8 @@
 package com.github.devapro.logcat.timber.ui
 
+import android.text.format.DateFormat
 import android.view.View
 import android.widget.TextView
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.github.devapro.logcat.timber.R
 import com.github.devapro.logcat.timber.model.ColumnsConfig
@@ -14,6 +14,8 @@ internal class LogItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
     private val logType: TextView = itemView.findViewById(R.id.log_type)
     private val logTag: TextView = itemView.findViewById(R.id.log_tag)
     private val logMessage: TextView = itemView.findViewById(R.id.log_message)
+
+    private val logTime: TextView = itemView.findViewById(R.id.log_time)
 
     fun bind(
         logItemModel: LogItemModel,
@@ -29,8 +31,13 @@ internal class LogItemViewHolder(itemView: View): RecyclerView.ViewHolder(itemVi
         }
         logTag.text = logItemModel.tag
         logMessage.text = logItemModel.message
+        logTime.text = DateFormat.format("HH:mm:ss", logItemModel.time)
 
-        logTag.isVisible = columnsConfig.isTagVisible
-        logType.isVisible = columnsConfig.isTypeVisible
+//        logTag.isVisible = columnsConfig.isTagVisible
+//        logType.isVisible = columnsConfig.isTypeVisible
+//        logTime.isVisible = columnsConfig.isTimeVisible
+        logTag.visibility = if (columnsConfig.isTagVisible) View.VISIBLE else View.GONE
+        logType.visibility = if (columnsConfig.isTypeVisible) View.VISIBLE else View.GONE
+        logTime.visibility = if (columnsConfig.isTimeVisible) View.VISIBLE else View.GONE
     }
 }

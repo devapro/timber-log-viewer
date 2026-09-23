@@ -43,3 +43,4 @@ TODO
 
 - store settings in SP
 - add ability open window with predefined parameters
+- add ability to copy logs by clicking on specific item

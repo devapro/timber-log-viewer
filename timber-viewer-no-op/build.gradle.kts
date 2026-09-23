@@ -7,7 +7,7 @@ plugins {
     id("signing")
 }
 
-val versionNumber = "0.1.1"
+val versionNumber = "0.1.4"
 
 android {
     namespace = "com.github.devapro.logcat.timber"
@@ -61,6 +61,7 @@ publishing {
             groupId = "io.github.devapro"
             artifactId = "timber-viewer-no-op"
             version = versionNumber
+            description = "No-op implementation of Timber Log Viewer for release builds."
 
             pom {
                 name.set("Timber Log Viewer")
