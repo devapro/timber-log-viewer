@@ -7,7 +7,7 @@ plugins {
     id("signing")
 }
 
-val versionNumber = "0.1.5"
+val versionNumber = "0.1.6"
 
 android {
     namespace = "com.github.devapro.logcat.timber"
